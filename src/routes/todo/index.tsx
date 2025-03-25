@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Button } from '@/modules/ui/button'
 import { Sidebar } from '@/modules/sidebar'
-import { CalendarDays, Plus } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { WeekSlider } from '@/modules/calendar/WeekSlider'
 import { useCalendarStore } from '@/stores/useCalendarStore'
 import { format } from '@formkit/tempo'
