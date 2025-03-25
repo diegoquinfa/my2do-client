@@ -1,4 +1,5 @@
-import { Button } from '@/components/ui/button'
+import { Button } from '@/modules/ui/button'
+import { useTheme } from '@/modules/ui/hooks/useTheme'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/')({
@@ -6,11 +7,15 @@ export const Route = createFileRoute('/')({
 })
 
 function Index() {
+  const { setTheme } = useTheme()
+
   return (
     <div className="p-2">
       <h3>Welcome Home!</h3>
       <br />
-      <Button>Hola</Button>
+      <Button onClick={() => setTheme('light')}>light</Button>
+      <br />
+      <Button onClick={() => setTheme('dark')}>dark</Button>
     </div>
   )
 }

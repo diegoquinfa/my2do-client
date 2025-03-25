@@ -1,53 +1,72 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Navbar } from '@/components/navbar'
+import { Button } from '@/modules/ui/button'
+import { Sidebar } from '@/modules/sidebar'
+import { CalendarDays, Plus } from 'lucide-react'
+import { WeekSlider } from '@/modules/calendar/WeekSlider'
+import { useCalendarStore } from '@/stores/useCalendarStore'
+import { format } from '@formkit/tempo'
+import { MonthModal } from '@/modules/calendar/MonthModal'
 
 export const Route = createFileRoute('/todo/')({
-  component: Index
+  component: TodoView
 })
 
-function Index() {
+function TodoView() {
+  const currentDay = useCalendarStore((state) => state.currentDay)
+  const updateSelectedDay = useCalendarStore((state) => state.updateSelectedDay)
+
   return (
-    <div className='flex flex-row divide-x-1'>
-      <Navbar />
-      <div className='flex flex-col gap-2  w-full bg-gray-700'>
-        <div className='flex w-full justify-between p-5 border-b-1'>
-          <div className='flex gap-3'>
-            <div className='bg-red-300 w-10 h-10 rounded-full'>
-              <div className='flex justify-center items-center h-full'>
-                <p className='font-bold text-white'>M</p>
+    <div className="mx-auto flex">
+      <Sidebar />
+
+      <div className="flex w-full flex-col gap-2">
+        <div className="flex justify-between gap-2 border-b-1 p-5">
+          <div className="flex gap-3">
+            <div className="size-10 rounded-full bg-red-300">
+              <div className="flex h-full items-center justify-center">
+                <p className="font-bold">M</p>
               </div>
             </div>
-            <div className=''>
-              <p className='text-white font-bold'>Hola, Miguel</p>
-              <p className='text-white'>domingo, 9 de marzo</p>
+
+            <div>
+              <p className="font-bold">Hola, Miguel</p>
+              <p
+                onClick={() => {
+                  updateSelectedDay(currentDay)
+                }}
+                className="hover:text-primary active:text-primary/80 cursor-default select-none"
+              >
+                {format(currentDay, 'full', 'es')}
+              </p>
             </div>
           </div>
-          <div className='flex justify-center items-center gap-2'>
-            <button className='bg-gray-900 text-white p-2 rounded'>
-              <img src="public\calendar-days.svg" alt="Calendar" />
-            </button>
-            <div >
-              <input type="text"
+
+          <div className="flex items-center justify-end gap-2">
+            <MonthModal />
+
+            <div className="hidden md:block">
+              <input
+                type="text"
                 placeholder="Buscar tarea..."
-                className='bg-gray-800 rounded-md block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-300 placeholder:text-gray-200 focus:outline-none sm:text-sm/6' />
+                className="border-response-pane-border bg-response-pane-background placeholder:text-foreground-subtlest block min-w-0 grow rounded-md border px-5 py-1.5 pr-3 pl-1 focus:outline-none sm:text-sm/6"
+              />
             </div>
           </div>
         </div>
-        <div className='border-b-1 p-5'>
-          <div className=''>
-            <p className='text-white font-bold'>Hola, Miguel</p>
-            <p className='text-white'>domingo, 9 de marzo</p>
-          </div>
+
+        <div className="border-b-1 p-5">
+          {/* <WeekSlider /> */}
+          <WeekSlider />
         </div>
-        <div className='flex justify-between p-5'>
-          <p className='text-white text-2xl font-bold'>Tareas de hoy</p>
-          <div className='flex bg-sky-800 text-white p-3 rounded gap-3'>
-            <img src="public\plus.svg" alt="plus" />
-            <p className='text-white'>Nueva tarea</p>
-          </div>
+
+        <div className="flex justify-between p-5">
+          <p className="text-2xl font-bold">Tareas de hoy</p>
+          <Button>
+            <Plus />
+            Nueva tarea
+          </Button>
         </div>
       </div>
     </div>
   )
 }
-
